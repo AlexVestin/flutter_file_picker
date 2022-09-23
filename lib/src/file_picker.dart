@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:io' show Platform;
 
+import 'package:file/file.dart';
 import 'package:file_picker/src/file_picker_io.dart';
 import 'package:file_picker/src/file_picker_macos.dart';
 import 'package:file_picker/src/file_picker_result.dart';
@@ -111,6 +112,23 @@ abstract class FilePicker extends PlatformInterface {
     bool lockParentWindow = false,
   }) async =>
       throw UnimplementedError('pickFiles() has not been implemented.');
+
+
+  Future<File?> pickFilesNativeFile({
+    required FileSystem fs,
+    String? dialogTitle,
+    String? initialDirectory,
+    FileType type = FileType.any,
+    List<String>? allowedExtensions,
+    Function(FilePickerStatus)? onFileLoading,
+    bool allowCompression = true,
+    bool allowMultiple = false,
+    bool withData = false,
+    bool withReadStream = false,
+    bool lockParentWindow = false,
+  }) async {
+    throw UnimplementedError();
+  }
 
   /// Asks the underlying platform to remove any temporary files created by this plugin.
   ///

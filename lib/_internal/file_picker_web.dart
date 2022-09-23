@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:html';
 import 'dart:typed_data';
 
+import 'package:file/file.dart' as file;
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -32,6 +34,44 @@ class FilePickerWeb extends FilePicker {
       target = targetElement;
     }
     return target;
+  }
+
+  @override
+  Future<file.File?> pickFilesNativeFile({
+    required file.FileSystem fs,
+    required String filename,
+    String? dialogTitle,
+    String? initialDirectory,
+    FileType type = FileType.any,
+    List<String>? allowedExtensions,
+    Function(FilePickerStatus)? onFileLoading,
+    bool allowCompression = true,
+    bool allowMultiple = false,
+    bool withData = false,
+    bool withReadStream = false,
+    bool lockParentWindow = false,
+  }) async {
+    final result = await pickFiles(
+      dialogTitle: dialogTitle,
+      initialDirectory: initialDirectory,
+      type: type,
+      allowedExtensions: allowedExtensions,
+      onFileLoading: onFileLoading,
+      allowCompression: allowCompression,
+      allowMultiple: allowMultiple,
+      withData: withData,
+      withReadStream: withReadStream,
+      lockParentWindow: lockParentWindow,
+    );
+    if (result != null && result.files.isNotEmpty) {
+      final bytes = result.files.first.bytes;
+      if (bytes != null) {
+        final file = fs.file(filename);
+        await file.writeAsBytes(bytes.buffer.asInt32List());
+        return file; 
+      }
+    }
+    return null;
   }
 
   @override
