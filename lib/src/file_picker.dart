@@ -116,6 +116,7 @@ abstract class FilePicker extends PlatformInterface {
 
   Future<File?> pickFilesNativeFile({
     required FileSystem fs,
+    required String filename,
     String? dialogTitle,
     String? initialDirectory,
     FileType type = FileType.any,
